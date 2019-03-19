@@ -8,7 +8,8 @@ public class Game {
     int[] places = new int[6];
     int[] purses = new int[6];
     boolean[] inPenaltyBox = new boolean[6];
-    String[] logs;
+
+	ArrayList logs = new ArrayList();
 
     LinkedList popQuestions = new LinkedList();
     LinkedList scienceQuestions = new LinkedList();
@@ -29,10 +30,6 @@ public class Game {
 
     public String createRockQuestion(int index) {
         return "Rock Question " + index;
-    }
-
-    public boolean isPlayable() {
-        return (howManyPlayers() >= 2);
     }
 
     public boolean add(String playerName) {
@@ -188,4 +185,8 @@ public class Game {
     protected void addPlayerNameToPlayerList(String playerName) {
         players.add(playerName);
     }
+
+	public String getLogs() {
+		return logs.toString();
+	}
 }
