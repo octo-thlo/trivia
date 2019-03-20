@@ -26,27 +26,43 @@ public class Game {
     }
 
 
-
-
     public void roll(int roll) {
         displayer.showPrintLn(players.get(currentPlayer) + " is the current player");
         displayer.showPrintLn("They have rolled a " + roll);
 
-        if (inPenaltyBox[currentPlayer]) {
-            if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
-                displayer.showPrintLn(players.get(currentPlayer) + " is getting out of the penalty box");
-                nextPlace(roll);
-                askQuestion();
-            } else {
-                displayer.showPrintLn(players.get(currentPlayer) + " is not getting out of the penalty box");
-                isGettingOutOfPenaltyBox = false;
-            }
+        checkIfPlayerIsAllowedToMoveThenAskQuestionIfHeCan(roll);
+    }
 
-        } else {
-            nextPlace(roll);
-            askQuestion();
+    private void checkIfPlayerIsAllowedToMoveThenAskQuestionIfHeCan(int roll) {
+        if (!inPenaltyBox[currentPlayer]) {
+            movePlayerAndAskQuestion(roll);
         }
+
+        else if (inPenaltyBox[currentPlayer] && !thePlayerStayingInPenaltyBox(roll)) {
+            playerIsGettingOutOfPenaltyBox();
+            movePlayerAndAskQuestion(roll);
+        }
+
+        else {
+            playerIsStayingInPenaltyBox();
+        }
+    }
+
+    private void movePlayerAndAskQuestion(int roll) {
+        nextPlace(roll);
+        askQuestion();
+    }
+    private void playerIsGettingOutOfPenaltyBox() {
+        isGettingOutOfPenaltyBox = true;
+        displayer.showPrintLn(players.get(currentPlayer) + " is getting out of the penalty box");
+    }
+    private void playerIsStayingInPenaltyBox() {
+        displayer.showPrintLn(players.get(currentPlayer) + " is not getting out of the penalty box");
+        isGettingOutOfPenaltyBox = false;
+    }
+
+    private boolean thePlayerStayingInPenaltyBox(int roll) {
+        return roll % 2 == 0;
     }
 
     public boolean thereIsNoWinner(int rand) {
@@ -59,7 +75,7 @@ public class Game {
     }
 
     private void nextPlace(int roll) {
-        places[currentPlayer] = places[currentPlayer] + roll;
+        places[currentPlayer] += roll;
         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
         displayer.showPrintLn(players.get(currentPlayer)
@@ -113,8 +129,6 @@ public class Game {
         inPenaltyBox[currentPlayer] = true;
         nextPlayerTurn();
     }
-
-
 
 
     private boolean didPlayerWin() {
