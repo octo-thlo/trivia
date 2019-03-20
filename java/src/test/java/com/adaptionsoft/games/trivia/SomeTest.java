@@ -15,9 +15,9 @@ public class SomeTest {
 
         Game aGame = new Game();
         //when
-        aGame.add("Chet");
-        aGame.add("Pat");
-        aGame.add("Sue");
+        aGame.addNewPlayer("Chet");
+        aGame.addNewPlayer("Pat");
+        aGame.addNewPlayer("Sue");
 
         int index = 0;
         for (int roll: rolls) {

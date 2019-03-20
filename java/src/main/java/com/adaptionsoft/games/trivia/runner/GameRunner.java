@@ -23,9 +23,9 @@ private static ArrayList<String> rolls = new ArrayList<String>();
         Game aGame = new Game();
 
 
-        aGame.add("Chet");
-        aGame.add("Pat");
-        aGame.add("Sue");
+        aGame.addNewPlayer("Chet");
+        aGame.addNewPlayer("Pat");
+        aGame.addNewPlayer("Sue");
 
         Random rand = new Random();
 

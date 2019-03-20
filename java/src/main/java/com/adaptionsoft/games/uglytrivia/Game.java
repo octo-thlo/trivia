@@ -1,7 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Game {
     ArrayList players = new ArrayList();
@@ -32,7 +32,7 @@ public class Game {
         return "Rock Question " + index;
     }
 
-    public boolean add(String playerName) {
+    public boolean addNewPlayer(String playerName) {
 
 
         addPlayerNameToPlayerList(playerName);
@@ -65,7 +65,7 @@ public class Game {
                 showPrintLn(players.get(currentPlayer)
                         + "'s new location is "
                         + places[currentPlayer]);
-                showPrintLn("The category is " + currentCategory());
+                showPrintLn("The category is " + categoryFromPlace(places[currentPlayer]));
                 askQuestion();
             } else {
                 showPrintLn(players.get(currentPlayer) + " is not getting out of the penalty box");
@@ -80,35 +80,21 @@ public class Game {
             showPrintLn(players.get(currentPlayer)
                     + "'s new location is "
                     + places[currentPlayer]);
-            showPrintLn("The category is " + currentCategory());
+            showPrintLn("The category is " + categoryFromPlace(places[currentPlayer]));
             askQuestion();
         }
 
     }
 
     private void askQuestion() {
-        if (currentCategory() == "Pop")
+        if (categoryFromPlace(places[currentPlayer]) == "Pop")
             showPrintLn(popQuestions.removeFirst());
-        if (currentCategory() == "Science")
+        if (categoryFromPlace(places[currentPlayer]) == "Science")
             showPrintLn(scienceQuestions.removeFirst());
-        if (currentCategory() == "Sports")
+        if (categoryFromPlace(places[currentPlayer]) == "Sports")
             showPrintLn(sportsQuestions.removeFirst());
-        if (currentCategory() == "Rock")
+        if (categoryFromPlace(places[currentPlayer]) == "Rock")
             showPrintLn(rockQuestions.removeFirst());
-    }
-
-
-    private String currentCategory() {
-        if (places[currentPlayer] == 0) return "Pop";
-        if (places[currentPlayer] == 4) return "Pop";
-        if (places[currentPlayer] == 8) return "Pop";
-        if (places[currentPlayer] == 1) return "Science";
-        if (places[currentPlayer] == 5) return "Science";
-        if (places[currentPlayer] == 9) return "Science";
-        if (places[currentPlayer] == 2) return "Sports";
-        if (places[currentPlayer] == 6) return "Sports";
-        if (places[currentPlayer] == 10) return "Sports";
-        return "Rock";
     }
 
     public boolean wasCorrectlyAnswered() {
@@ -158,6 +144,17 @@ public class Game {
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
         return true;
+    }
+
+    private String categoryFromPlace(int place) {
+        List<Integer> placesWhichReturnPop = Arrays.asList(0, 4, 8);
+        List<Integer> placesWhichReturnScience = Arrays.asList(1, 5, 9);
+        List<Integer> placesWhichReturnSports = Arrays.asList(2, 6, 10);
+
+        if (placesWhichReturnPop.contains(place)) return "Pop";
+        if (placesWhichReturnScience.contains(place)) return "Science";
+        if (placesWhichReturnSports.contains(place)) return "Sports";
+        return "Rock";
     }
 
 
