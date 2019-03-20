@@ -3,8 +3,6 @@ package com.adaptionsoft.games.trivia;
 import com.adaptionsoft.games.uglytrivia.Game;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static junit.framework.Assert.*;
 
 public class GameTest {
@@ -23,7 +21,7 @@ public class GameTest {
 
         int index = 0;
         for (int roll: rolls) {
-            aGame.roll(roll);
+            aGame.nextTurn(roll);
             aGame.thereIsNoWinner(lucky[index]);
             index++;
         }
@@ -47,7 +45,7 @@ public class GameTest {
 
         int index = 0;
         for (int roll: rolls) {
-            aGame.roll(roll);
+            aGame.nextTurn(roll);
             aGame.thereIsNoWinner(lucky[index]);
             index++;
         }
@@ -61,7 +59,6 @@ public class GameTest {
     public void addNewPlayerTest() {
         //Given
         Game game = new Game();
-        ArrayList<String> players = new ArrayList<>();
 
         //When
         game.addNewPlayer("Josephine");
@@ -73,4 +70,5 @@ public class GameTest {
         assertFalse(game.getInPenaltyBox()[0]);
 
     }
+
 }

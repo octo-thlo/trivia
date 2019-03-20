@@ -1,17 +1,11 @@
 
 package com.adaptionsoft.games.trivia.runner;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import com.adaptionsoft.games.uglytrivia.Game;
 
 public class GameRunner {
-
-private static ArrayList<String> rolls = new ArrayList<>();
-
-    private static boolean notAWinner;
-    private static String logs;
 
     public static void main(String[] args) {
         Game aGame = new Game();
@@ -27,16 +21,8 @@ private static ArrayList<String> rolls = new ArrayList<>();
             int randomRoll = rand.nextInt(5) + 1;
 
             ran = rand.nextInt(9);
-            aGame.roll(randomRoll);
-
+            aGame.nextTurn(randomRoll);
 
         } while (aGame.thereIsNoWinner(ran));
-        logs = aGame.getLogs();
-        System.out.println(logs);
-        System.out.println(getRolls());
-    }
-
-    private static String getRolls() {
-        return rolls.toString();
     }
 }

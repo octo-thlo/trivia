@@ -3,32 +3,30 @@ package com.adaptionsoft.games.uglytrivia;
 import java.util.*;
 
 public class Game {
-
-
+    
     private ArrayList<String> players = new ArrayList<>();
     private int[] places = new int[6];
     private int[] purses = new int[6];
     private boolean[] inPenaltyBox = new boolean[6];
-    private Displayer displayer = new Displayer();
-    private Question question = new Question();
     private int currentPlayer = 0;
     private boolean isGettingOutOfPenaltyBox;
 
+    private Logger logger = new Logger();
+    private Question question = new Question();
+
     public void addNewPlayer(String playerName) {
         addPlayerNameToPlayerList(playerName);
-        displayer.showPrintLn(playerName + " was added");
-        displayer.showPrintLn("They are player number " + players.size());
+        logger.showPrintLn(playerName + " was added");
+        logger.showPrintLn("They are player number " + players.size());
     }
-    
-    public void roll(int roll) {
-        displayer.showPrintLn(players.get(currentPlayer) + " is the current player");
-        displayer.showPrintLn("They have rolled a " + roll);
 
+    public void nextTurn(int roll) {
+        logger.roll(players.get(currentPlayer), roll);
         checkIfPlayerIsAllowedToMoveThenAskQuestionIfHeCan(roll);
     }
 
     public boolean thereIsNoWinner(int rand) {
-        if (rand == 7) {
+        if (theAnswerIsWrong(rand)) {
             wrongAnswer();
             return true;
         } else {
@@ -55,12 +53,14 @@ public class Game {
         nextPlace(roll);
         askQuestion();
     }
+
     private void playerIsGettingOutOfPenaltyBox() {
         isGettingOutOfPenaltyBox = true;
-        displayer.showPrintLn(players.get(currentPlayer) + " is getting out of the penalty box");
+        logger.showPrintLn(players.get(currentPlayer) + " is getting out of the penalty box");
     }
+
     private void playerIsStayingInPenaltyBox() {
-        displayer.showPrintLn(players.get(currentPlayer) + " is not getting out of the penalty box");
+        logger.showPrintLn(players.get(currentPlayer) + " is not getting out of the penalty box");
         isGettingOutOfPenaltyBox = false;
     }
 
@@ -68,20 +68,23 @@ public class Game {
         return roll % 2 == 0;
     }
 
+    private boolean theAnswerIsWrong(int roll) {
+        return roll == 7;
+    }
 
     private void nextPlace(int roll) {
         places[currentPlayer] += roll;
         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
-        displayer.showPrintLn(players.get(currentPlayer)
+        logger.showPrintLn(players.get(currentPlayer)
                 + "'s new location is "
                 + places[currentPlayer]);
     }
 
     private void askQuestion() {
-        displayer.showPrintLn("The category is " + question.categoryFromPlace(places[currentPlayer]));
+        logger.showPrintLn("The category is " + question.categoryFromPlace(places[currentPlayer]));
 
-        displayer.showPrintLn(question.nextQuestion(places[currentPlayer]));
+        logger.showPrintLn(question.nextQuestion(places[currentPlayer]));
     }
 
     private boolean wasCorrectlyAnswered() {
@@ -91,13 +94,13 @@ public class Game {
                 return true;
             }
         }
-        displayer.showPrintLn("Answer was correct!!!!");
+        logger.showPrintLn("Answer was correct!!!!");
         return correctlyAnsweredTodo();
     }
 
     private boolean correctlyAnsweredTodo() {
         purses[currentPlayer]++;
-        displayer.showPrintLn(players.get(currentPlayer)
+        logger.showPrintLn(players.get(currentPlayer)
                 + " now has "
                 + purses[currentPlayer]
                 + " Gold Coins.");
@@ -112,12 +115,11 @@ public class Game {
     }
 
     private void wrongAnswer() {
-        displayer.showPrintLn("Question was incorrectly answered");
-        displayer.showPrintLn(players.get(currentPlayer) + " was sent to the penalty box");
+        logger.showPrintLn("Question was incorrectly answered");
+        logger.showPrintLn(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
         nextPlayerTurn();
     }
-
 
     private boolean didPlayerWin() {
         if (purses[currentPlayer] == 6) {
@@ -127,16 +129,17 @@ public class Game {
         }
     }
 
-    public String getLogs() {
-        return displayer.logs.toString();
-    }
-
     private void addPlayerNameToPlayerList(String playerName) {
         players.add(playerName);
     }
 
     private int howManyPlayers() {
         return players.size();
+    }
+
+
+    public String getLogs() {
+        return logger.logs.toString();
     }
 
     public ArrayList<String> getPlayers() {
@@ -154,6 +157,4 @@ public class Game {
     public boolean[] getInPenaltyBox() {
         return inPenaltyBox;
     }
-
-
 }
