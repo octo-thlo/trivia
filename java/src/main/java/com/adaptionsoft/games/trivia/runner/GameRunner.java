@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.Displayer;
 
 
 public class GameRunner {
@@ -12,16 +13,11 @@ public class GameRunner {
 private static ArrayList<String> rolls = new ArrayList<String>();
 
     private static boolean notAWinner;
-
-    public static String getLogs() {
-        return logs;
-    }
-
     private static String logs;
 
     public static void main(String[] args) {
         Game aGame = new Game();
-
+        Displayer displayer = new Displayer();
 
         aGame.addNewPlayer("Chet");
         aGame.addNewPlayer("Pat");
