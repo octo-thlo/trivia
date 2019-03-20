@@ -14,7 +14,7 @@ public class Game {
     boolean isGettingOutOfPenaltyBox;
 
     public boolean addNewPlayer(String playerName) {
-        
+
         addPlayerNameToPlayerList(playerName);
         initializeNewPlayerPlace();
         initializeNewPlayerPurse();
@@ -35,15 +35,8 @@ public class Game {
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
-
                 displayer.showPrintLn(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-                displayer.showPrintLn(players.get(currentPlayer)
-                        + "'s new location is "
-                        + places[currentPlayer]);
-                displayer.showPrintLn("The category is " + question.categoryFromPlace(places[currentPlayer]));
+                nextPlace(roll);
                 askQuestion();
             } else {
                 displayer.showPrintLn(players.get(currentPlayer) + " is not getting out of the penalty box");
@@ -51,20 +44,32 @@ public class Game {
             }
 
         } else {
-
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-            displayer.showPrintLn(players.get(currentPlayer)
-                    + "'s new location is "
-                    + places[currentPlayer]);
-            displayer.showPrintLn("The category is " + question.categoryFromPlace(places[currentPlayer]));
+            nextPlace(roll);
             askQuestion();
         }
+    }
 
+    public boolean thereIsNoWinner(int rand) {
+        if (rand == 7) {
+            wrongAnswer();
+            return true;
+        } else {
+            return wasCorrectlyAnswered();
+        }
+    }
+
+    private void nextPlace(int roll) {
+        places[currentPlayer] = places[currentPlayer] + roll;
+        if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+
+        displayer.showPrintLn(players.get(currentPlayer)
+                + "'s new location is "
+                + places[currentPlayer]);
     }
 
     private void askQuestion() {
+        displayer.showPrintLn("The category is " + question.categoryFromPlace(places[currentPlayer]));
+
         if (question.categoryFromPlace(places[currentPlayer]) == "Pop")
             displayer.showPrintLn(question.popQuestions.removeFirst());
         if (question.categoryFromPlace(places[currentPlayer]) == "Science")
@@ -77,38 +82,24 @@ public class Game {
 
     public boolean wasCorrectlyAnswered() {
         if (inPenaltyBox[currentPlayer]) {
-            if (isGettingOutOfPenaltyBox) {
-                displayer.showPrintLn("Answer was correct!!!!");
-                purses[currentPlayer]++;
-                displayer.showPrintLn(players.get(currentPlayer)
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.");
-
-                boolean winner = didPlayerWin();
-                nextPlayerTurn();
-
-                return winner;
-            } else {
+            if (!isGettingOutOfPenaltyBox) {
                 nextPlayerTurn();
                 return true;
             }
-
-
-        } else {
-
-            displayer.showPrintLn("Answer was corrent!!!!");
-            purses[currentPlayer]++;
-            displayer.showPrintLn(players.get(currentPlayer)
-                    + " now has "
-                    + purses[currentPlayer]
-                    + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-            nextPlayerTurn();
-
-            return winner;
         }
+        displayer.showPrintLn("Answer was correct!!!!");
+        return correctlyAnsweredTodo();
+    }
+
+    private boolean correctlyAnsweredTodo() {
+        purses[currentPlayer]++;
+        displayer.showPrintLn(players.get(currentPlayer)
+                + " now has "
+                + purses[currentPlayer]
+                + " Gold Coins.");
+
+        nextPlayerTurn();
+        return didPlayerWin();
     }
 
     private void nextPlayerTurn() {
@@ -116,13 +107,11 @@ public class Game {
         if (currentPlayer == howManyPlayers()) currentPlayer = 0;
     }
 
-    public boolean wrongAnswer() {
+    public void wrongAnswer() {
         displayer.showPrintLn("Question was incorrectly answered");
         displayer.showPrintLn(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
-
         nextPlayerTurn();
-        return true;
     }
 
 
