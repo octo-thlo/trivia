@@ -4,18 +4,18 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Question {
+class Question {
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+    LinkedList<String> popQuestions = new LinkedList<>();
+    LinkedList<String> scienceQuestions = new LinkedList<>();
+    LinkedList<String> sportsQuestions = new LinkedList<>();
+    LinkedList<String> rockQuestions = new LinkedList<>();
 
-    public Question() {
+    Question() {
         initializeQuestions();
     }
 
-    public String categoryFromPlace(int place) {
+    String categoryFromPlace(int place) {
         List<Integer> placesWhichReturnPop = Arrays.asList(0, 4, 8);
         List<Integer> placesWhichReturnScience = Arrays.asList(1, 5, 9);
         List<Integer> placesWhichReturnSports = Arrays.asList(2, 6, 10);
@@ -26,7 +26,7 @@ public class Question {
         return "Rock";
     }
 
-    void initializeQuestions() {
+    private void initializeQuestions() {
         for (int i = 0; i < 50; i++) {
             popQuestions.addLast("Pop Question " + i);
             scienceQuestions.addLast(("Science Question " + i));

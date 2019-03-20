@@ -13,13 +13,8 @@ public class Game {
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
-    public Game() {
-
-    }
-
     public boolean addNewPlayer(String playerName) {
-
-
+        
         addPlayerNameToPlayerList(playerName);
         initializeNewPlayerPlace();
         initializeNewPlayerPurse();
@@ -145,19 +140,19 @@ public class Game {
         return displayer.logs.toString();
     }
 
-    protected void initializeNewPlayerInPenaltyBox() {
+    private void initializeNewPlayerInPenaltyBox() {
         inPenaltyBox[howManyPlayers()] = false;
     }
 
-    protected void initializeNewPlayerPurse() {
+    private void initializeNewPlayerPurse() {
         purses[howManyPlayers()] = 0;
     }
 
-    protected void initializeNewPlayerPlace() {
+    private void initializeNewPlayerPlace() {
         places[howManyPlayers()] = 0;
     }
 
-    protected void addPlayerNameToPlayerList(String playerName) {
+    private void addPlayerNameToPlayerList(String playerName) {
         players.add(playerName);
     }
 
