@@ -34,4 +34,17 @@ class Question {
             rockQuestions.addLast("Rock Question " + i);
         }
     }
+
+    String nextQuestion(int place) {
+        switch (categoryFromPlace(place)) {
+            case "Pop":
+                return popQuestions.removeFirst();
+            case "Science":
+                return scienceQuestions.removeFirst();
+            case "Sports":
+                return sportsQuestions.removeFirst();
+            default:
+                return rockQuestions.removeFirst();
+        }
+    }
 }

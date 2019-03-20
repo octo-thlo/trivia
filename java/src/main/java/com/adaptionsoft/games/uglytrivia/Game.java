@@ -86,17 +86,10 @@ public class Game {
     private void askQuestion() {
         displayer.showPrintLn("The category is " + question.categoryFromPlace(places[currentPlayer]));
 
-        if (question.categoryFromPlace(places[currentPlayer]) == "Pop")
-            displayer.showPrintLn(question.popQuestions.removeFirst());
-        if (question.categoryFromPlace(places[currentPlayer]) == "Science")
-            displayer.showPrintLn(question.scienceQuestions.removeFirst());
-        if (question.categoryFromPlace(places[currentPlayer]) == "Sports")
-            displayer.showPrintLn(question.sportsQuestions.removeFirst());
-        if (question.categoryFromPlace(places[currentPlayer]) == "Rock")
-            displayer.showPrintLn(question.rockQuestions.removeFirst());
+        displayer.showPrintLn(question.nextQuestion(places[currentPlayer]));
     }
 
-    public boolean wasCorrectlyAnswered() {
+    private boolean wasCorrectlyAnswered() {
         if (inPenaltyBox[currentPlayer]) {
             if (!isGettingOutOfPenaltyBox) {
                 nextPlayerTurn();
@@ -123,7 +116,7 @@ public class Game {
         if (currentPlayer == howManyPlayers()) currentPlayer = 0;
     }
 
-    public void wrongAnswer() {
+    private void wrongAnswer() {
         displayer.showPrintLn("Question was incorrectly answered");
         displayer.showPrintLn(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
