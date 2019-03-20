@@ -10,21 +10,11 @@ public class Game {
     Displayer displayer = new Displayer();
     Question question = new Question();
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
-
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
     public Game() {
-        for (int i = 0; i < 50; i++) {
-            popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
-            rockQuestions.addLast("Rock Question " + i);
-        }
+
     }
 
     public boolean addNewPlayer(String playerName) {
@@ -41,9 +31,7 @@ public class Game {
     }
 
 
-    public int howManyPlayers() {
-        return players.size();
-    }
+
 
     public void roll(int roll) {
         displayer.showPrintLn(players.get(currentPlayer) + " is the current player");
@@ -83,13 +71,13 @@ public class Game {
 
     private void askQuestion() {
         if (question.categoryFromPlace(places[currentPlayer]) == "Pop")
-            displayer.showPrintLn(popQuestions.removeFirst());
+            displayer.showPrintLn(question.popQuestions.removeFirst());
         if (question.categoryFromPlace(places[currentPlayer]) == "Science")
-            displayer.showPrintLn(scienceQuestions.removeFirst());
+            displayer.showPrintLn(question.scienceQuestions.removeFirst());
         if (question.categoryFromPlace(places[currentPlayer]) == "Sports")
-            displayer.showPrintLn(sportsQuestions.removeFirst());
+            displayer.showPrintLn(question.sportsQuestions.removeFirst());
         if (question.categoryFromPlace(places[currentPlayer]) == "Rock")
-            displayer.showPrintLn(rockQuestions.removeFirst());
+            displayer.showPrintLn(question.rockQuestions.removeFirst());
     }
 
     public boolean wasCorrectlyAnswered() {
@@ -130,7 +118,7 @@ public class Game {
 
     private void nextPlayerTurn() {
         currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
+        if (currentPlayer == howManyPlayers()) currentPlayer = 0;
     }
 
     public boolean wrongAnswer() {
@@ -146,7 +134,11 @@ public class Game {
 
 
     private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == 6);
+        if (purses[currentPlayer] == 6) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public String getLogs() {
@@ -167,6 +159,10 @@ public class Game {
 
     protected void addPlayerNameToPlayerList(String playerName) {
         players.add(playerName);
+    }
+
+    private int howManyPlayers() {
+        return players.size();
     }
 
 
