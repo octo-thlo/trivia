@@ -3,34 +3,37 @@ package com.adaptionsoft.games.uglytrivia;
 import java.util.*;
 
 public class Game {
-    ArrayList players = new ArrayList();
-    int[] places = new int[6];
-    int[] purses = new int[6];
-    boolean[] inPenaltyBox = new boolean[6];
-    Displayer displayer = new Displayer();
-    Question question = new Question();
 
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
 
-    public boolean addNewPlayer(String playerName) {
+    private ArrayList<String> players = new ArrayList<>();
+    private int[] places = new int[6];
+    private int[] purses = new int[6];
+    private boolean[] inPenaltyBox = new boolean[6];
+    private Displayer displayer = new Displayer();
+    private Question question = new Question();
+    private int currentPlayer = 0;
+    private boolean isGettingOutOfPenaltyBox;
 
+    public void addNewPlayer(String playerName) {
         addPlayerNameToPlayerList(playerName);
-        initializeNewPlayerPlace();
-        initializeNewPlayerPurse();
-        initializeNewPlayerInPenaltyBox();
-
         displayer.showPrintLn(playerName + " was added");
         displayer.showPrintLn("They are player number " + players.size());
-        return true;
     }
-
-
+    
     public void roll(int roll) {
         displayer.showPrintLn(players.get(currentPlayer) + " is the current player");
         displayer.showPrintLn("They have rolled a " + roll);
 
         checkIfPlayerIsAllowedToMoveThenAskQuestionIfHeCan(roll);
+    }
+
+    public boolean thereIsNoWinner(int rand) {
+        if (rand == 7) {
+            wrongAnswer();
+            return true;
+        } else {
+            return wasCorrectlyAnswered();
+        }
     }
 
     private void checkIfPlayerIsAllowedToMoveThenAskQuestionIfHeCan(int roll) {
@@ -65,14 +68,6 @@ public class Game {
         return roll % 2 == 0;
     }
 
-    public boolean thereIsNoWinner(int rand) {
-        if (rand == 7) {
-            wrongAnswer();
-            return true;
-        } else {
-            return wasCorrectlyAnswered();
-        }
-    }
 
     private void nextPlace(int roll) {
         places[currentPlayer] += roll;
@@ -136,24 +131,28 @@ public class Game {
         return displayer.logs.toString();
     }
 
-    private void initializeNewPlayerInPenaltyBox() {
-        inPenaltyBox[howManyPlayers()] = false;
-    }
-
-    private void initializeNewPlayerPurse() {
-        purses[howManyPlayers()] = 0;
-    }
-
-    private void initializeNewPlayerPlace() {
-        places[howManyPlayers()] = 0;
-    }
-
     private void addPlayerNameToPlayerList(String playerName) {
         players.add(playerName);
     }
 
     private int howManyPlayers() {
         return players.size();
+    }
+
+    public ArrayList<String> getPlayers() {
+        return players;
+    }
+
+    public int[] getPlaces() {
+        return places;
+    }
+
+    public int[] getPurses() {
+        return purses;
+    }
+
+    public boolean[] getInPenaltyBox() {
+        return inPenaltyBox;
     }
 
 
